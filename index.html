@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusive Video Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+
+    <div class="max-w-2xl w-full p-8 bg-gray-800 rounded-xl shadow-2xl border border-gray-700">
+        
+        <div id="header-content" class="text-center mb-8">
+            <h1 class="text-3xl font-bold mb-2">Ready to Watch?</h1>
+            <p class="text-gray-400">Please enter your details to unlock the training video.</p>
+        </div>
+
+        <form id="lead-form" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <input type="text" id="firstName" placeholder="First Name" required 
+                    class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none">
+                <input type="text" id="lastName" placeholder="Last Name" required 
+                    class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none">
+            </div>
+            <input type="email" id="email" placeholder="Email Address" required 
+                class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none">
+            
+            <button type="submit" id="submit-btn" 
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded transition duration-300">
+                Unlock Video Now
+            </button>
+        </form>
+
+        <div id="video-container" class="hidden">
+            <div class="aspect-video">
+                <iframe id="youtube-video" class="w-full h-full rounded-lg" 
+                    src="https://www.youtube.com/embed/gknJ4M1LO6I?autoplay=0" 
+                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                </iframe>
+            </div>
+            <p class="mt-4 text-center text-green-400 font-medium">Access Granted! Enjoy the video.</p>
+        </div>
+
+    </div>
+
+    <script>
+        const form = document.getElementById('lead-form');
+        const videoContainer = document.getElementById('video-container');
+        const header = document.getElementById('header-content');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const data = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                timestamp: new Date().toLocaleString()
+            };
+
+            // 1. SEND DATA TO YOUR REPORT (Example using SheetDB)
+            // Replace 'https://sheetdb.io/api/v1/22u2xc2jzpkjw' with your SheetDB API URL
+            fetch('https://sheetdb.io/api/v1/22u2xc2jzpkjw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data: [data] })
+            })
+            .then(response => {
+                // 2. REVEAL VIDEO
+                form.classList.add('hidden');
+                header.classList.add('hidden');
+                videoContainer.classList.remove('hidden');
+                
+                // Auto-play the video by updating the src
+                const video = document.getElementById('youtube-video');
+                video.src += "&autoplay=1";
+            })
+            .catch(error => alert('Error saving data. Please try again.'));
+        });
+    </script>
+</body>
+</html>
