@@ -20,12 +20,12 @@
 
         <form id="lead-form" class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
-                <input type="text" id="First Name" placeholder="First Name" required 
+                <input type="text" id="firstName" placeholder="First Name" required 
                     class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none">
-                <input type="text" id="Last Name" placeholder="Last Name" required 
+                <input type="text" id="lastName" placeholder="Last Name" required 
                     class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none">
             </div>
-            <input type="Email" id="Email" placeholder="Email Address" required 
+            <input type="email" id="email" placeholder="Email Address" required 
                 class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none">
             
             <button type="submit" id="submit-btn" 
@@ -54,31 +54,34 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
+            // The keys below MUST match your Google Sheet headers exactly
             const data = {
-                FirstName: document.getElementById('First Name').value,
-                LastName: document.getElementById('Last Name').value,
-                Email: document.getElementById('Email').value,
-                Timestamp: new Date().toLocaleString()
+                "First Name": document.getElementById('firstName').value,
+                "Last Name": document.getElementById('lastName').value,
+                "Email": document.getElementById('email').value,
+                "Timestamp": new Date().toLocaleString()
             };
 
-            // 1. SEND DATA TO YOUR REPORT (Example using SheetDB)
-            // Replace 'https://sheetdb.io/api/v1/uqwz74fqeih7k' with your SheetDB API URL
+            // Replace 'https://sheetdb.io/api/v1/uqwz74fqeih7k' with your actual SheetDB API URL
             fetch('https://sheetdb.io/api/v1/uqwz74fqeih7k', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ data: [data] })
             })
             .then(response => {
-                // 2. REVEAL VIDEO
+                // REVEAL VIDEO
                 form.classList.add('hidden');
                 header.classList.add('hidden');
                 videoContainer.classList.remove('hidden');
                 
-                // Auto-play the video by updating the src
+                // Auto-play the video
                 const video = document.getElementById('youtube-video');
                 video.src += "&autoplay=1";
             })
-            .catch(error => alert('Error saving data. Please try again.'));
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an issue saving your info. Please try again.');
+            });
         });
     </script>
 </body>
