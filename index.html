@@ -25,7 +25,7 @@
                 <input type="text" id="Last Name" placeholder="Last Name" required 
                     class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none">
             </div>
-            <input type="email" id="email" placeholder="Email Address" required 
+            <input type="Email" id="Email" placeholder="Email Address" required 
                 class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none">
             
             <button type="submit" id="submit-btn" 
@@ -55,10 +55,10 @@
             e.preventDefault();
             
             const data = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                timestamp: new Date().toLocaleString()
+                FirstName: document.getElementById('First Name').value,
+                LastName: document.getElementById('Last Name').value,
+                Email: document.getElementById('Email').value,
+                Timestamp: new Date().toLocaleString()
             };
 
             // 1. SEND DATA TO YOUR REPORT (Example using SheetDB)
